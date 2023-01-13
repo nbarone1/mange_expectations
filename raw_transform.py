@@ -2,7 +2,6 @@
 
 # Importing the pandas library and renaming it to pd.
 import pandas as pd
-import numpy as np
 
 # Select Data File
 import tkinter as tk
