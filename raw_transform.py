@@ -15,46 +15,36 @@ path = filedialog.askopenfilename()
 
 raw = pd.read_excel(path)
 
-# Get date list
-
-dates = np.unique(raw["%Calendar Date"])
-
-print(len(dates))
-
-# get unique states
-
-ostates = np.unique(raw["Origin State"])
-dstates = np.unique(raw["Destination State"])
-
-rawstates = np.concatenate((ostates,dstates))
-
-states = np.unique(rawstates)
-print(len(states))
-
-# if date and origin/destination keep numbers
-
+# Creating a dictionary with the key being the concatenation of the date and state and the value being
+# a list of the aggregated values.
 agg_date = {}
 
-# Creating a dictionary with the keys being the date and state and the values being a list of 3 zeros.
-for i in range(0,len(dates)):
-    for j in range(0,len(states)):
-        if dates[i]+states[j] not in agg_date:
-            agg_date[dates[i]+states[j]] = [0,0,0]
-
-compare = agg_date
-
+# Creating a dictionary with the key being the concatenation of the date and the state. The value is a
+# list of the average shipper rate, average cost, load count, dat estimated rate, and 1.
 for i in range(0,len(raw)):
-    concat = raw[i]["%Calendar Date"]+raw[i]["Origin State"]
-    concat2 = raw[i]["%Calendar Date"]+raw[i]["Destination State"]
+    concat = str(raw.iloc[i].loc["%Calendar Date"])+raw.iloc[i].loc["Origin State"]
+    concat2 = str(raw.iloc[i].loc["%Calendar Date"])+raw.iloc[i].loc["Origin State"]
     if concat in agg_date:
-        agg_date[concat] += [raw[i]["Avg(Shipper_Rate)"],raw[i]["AVG Cost"],raw[i]["Load Count"],raw[i]["DAT_EST_RATE"]]
+        agg_date[concat][0] += raw.iloc[i].loc["Avg(Shipper_Rate)"]
+        agg_date[concat][1] += raw.iloc[i].loc["AVG COST"]
+        agg_date[concat][2] += raw.iloc[i].loc["Load Count"]
+        agg_date[concat][3] += raw.iloc[i].loc["DAT_EST_RATE"]
+        agg_date[concat][4] += 1
     else:
-        agg_date[concat] += [raw[i]["Avg(Shipper_Rate)"],raw[i]["AVG Cost"],raw[i]["Load Count"],raw[i]["DAT_EST_RATE"]]
+        agg_date[concat] = [raw.iloc[i].loc["Avg(Shipper_Rate)"],raw.iloc[i].loc["AVG COST"],raw.iloc[i].loc["Load Count"],raw.iloc[i].loc["DAT_EST_RATE"],1]
     if concat2 in agg_date:
-        agg_date[concat] += [raw[i]["Avg(Shipper_Rate)"],raw[i]["AVG Cost"],raw[i]["Load Count"],raw[i]["DAT_EST_RATE"]]
+        agg_date[concat2][0] += raw.iloc[i].loc["Avg(Shipper_Rate)"]
+        agg_date[concat2][1] += raw.iloc[i].loc["AVG COST"]
+        agg_date[concat2][2] += raw.iloc[i].loc["Load Count"]
+        agg_date[concat2][3] += raw.iloc[i].loc["DAT_EST_RATE"]
+        agg_date[concat2][4] += 1
     else:
-        agg_date[concat2] += [raw[i]["Avg(Shipper_Rate)"],raw[i]["AVG Cost"],raw[i]["Load Count"],raw[i]["DAT_EST_RATE"]]
+        agg_date[concat2] = [raw.iloc[i].loc["Avg(Shipper_Rate)"],raw.iloc[i].loc["AVG COST"],raw.iloc[i].loc["Load Count"],raw.iloc[i].loc["DAT_EST_RATE"],1]
 
+# Creating a dataframe from the dictionary.
 df = pd.DataFrame(agg_date)
 
-df.to_excel('raw_result.xlsx')
+# Saving the file to the path that the user selects.
+savepath = filedialog.asksaveasfile(defaultextension=".xlsx")
+
+df.to_excel(savepath)
