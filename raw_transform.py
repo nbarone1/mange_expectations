@@ -23,8 +23,8 @@ agg_date = {}
 # Creating a dictionary with the key being the concatenation of the date and the state. The value is a
 # list of the average shipper rate, average cost, load count, dat estimated rate, and 1.
 for i in range(0,len(raw)):
-    concat = str(raw.iloc[i].loc["%Calendar Date"])+raw.iloc[i].loc["Origin State"]
-    concat2 = str(raw.iloc[i].loc["%Calendar Date"])+raw.iloc[i].loc["Origin State"]
+    concat = str(raw.iloc[i].loc["%Calendar Date"])[0:10]+raw.iloc[i].loc["Origin State"]
+    concat2 = str(raw.iloc[i].loc["%Calendar Date"])[0:10]+raw.iloc[i].loc["Origin State"]
     if concat in agg_date:
         agg_date[concat][0] += raw.iloc[i].loc["Avg(Shipper_Rate)"]
         agg_date[concat][1] += raw.iloc[i].loc["AVG COST"]
@@ -43,11 +43,12 @@ for i in range(0,len(raw)):
         agg_date[concat2] = [raw.iloc[i].loc["Avg(Shipper_Rate)"],raw.iloc[i].loc["AVG COST"],raw.iloc[i].loc["Load Count"],raw.iloc[i].loc["DAT_EST_RATE"],1]
 
 # Creating a dataframe from the dictionary.
-df = pd.DataFrame(agg_date,orient='index')
+df = pd.DataFrame.from_dict(agg_date,orient='index')
+df.columns = ['SHIPPER','COST','LC','DAT','DATES HIT']
+df.index.name = 'Date State'
 
 # Saving the file to the path that the user selects.
 try: 
-    with filedialog.asksaveasfile(defaultextension=".xlsx") as file: df.to_excel(file.name,index = False)
+    with filedialog.asksaveasfile(defaultextension=".xlsx") as file: df.to_excel(file.name)
 except AttributeError:
     print("Cancelled Save")
-root.destroy()
