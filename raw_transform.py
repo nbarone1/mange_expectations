@@ -12,6 +12,7 @@ from tkinter import filedialog
 root = tk.Tk()
 
 path = filedialog.askopenfilename()
+root.destroy()
 
 raw = pd.read_excel(path)
 
@@ -42,9 +43,11 @@ for i in range(0,len(raw)):
         agg_date[concat2] = [raw.iloc[i].loc["Avg(Shipper_Rate)"],raw.iloc[i].loc["AVG COST"],raw.iloc[i].loc["Load Count"],raw.iloc[i].loc["DAT_EST_RATE"],1]
 
 # Creating a dataframe from the dictionary.
-df = pd.DataFrame(agg_date)
+df = pd.DataFrame(agg_date,orient='index')
 
 # Saving the file to the path that the user selects.
-savepath = filedialog.asksaveasfile(defaultextension=".xlsx")
-
-df.to_excel(savepath)
+try: 
+    with filedialog.asksaveasfile(defaultextension=".xlsx") as file: df.to_excel(file.name,index = False)
+except AttributeError:
+    print("Cancelled Save")
+root.destroy()
