@@ -33,5 +33,28 @@ print(len(states))
 
 # if date and origin/destination keep numbers
 
+agg_date = {}
+
+# Creating a dictionary with the keys being the date and state and the values being a list of 3 zeros.
 for i in range(0,len(dates)):
-    
+    for j in range(0,len(states)):
+        if dates[i]+states[j] not in agg_date:
+            agg_date[dates[i]+states[j]] = [0,0,0]
+
+compare = agg_date
+
+for i in range(0,len(raw)):
+    concat = raw[i]["%Calendar Date"]+raw[i]["Origin State"]
+    concat2 = raw[i]["%Calendar Date"]+raw[i]["Destination State"]
+    if concat in agg_date:
+        agg_date[concat] += [raw[i]["Avg(Shipper_Rate)"],raw[i]["AVG Cost"],raw[i]["Load Count"],raw[i]["DAT_EST_RATE"]]
+    else:
+        agg_date[concat] += [raw[i]["Avg(Shipper_Rate)"],raw[i]["AVG Cost"],raw[i]["Load Count"],raw[i]["DAT_EST_RATE"]]
+    if concat2 in agg_date:
+        agg_date[concat] += [raw[i]["Avg(Shipper_Rate)"],raw[i]["AVG Cost"],raw[i]["Load Count"],raw[i]["DAT_EST_RATE"]]
+    else:
+        agg_date[concat2] += [raw[i]["Avg(Shipper_Rate)"],raw[i]["AVG Cost"],raw[i]["Load Count"],raw[i]["DAT_EST_RATE"]]
+
+df = pd.DataFrame(agg_date)
+
+df.to_excel('raw_result.xlsx')
