@@ -52,6 +52,15 @@ df['COST'] = df['COST']/df['LC']
 df['DAT'] = df['DAT']/df['LC']
 df.index.name = 'Date State'
 
+# Clean Date and State values up
+date = []
+state = []
+for i in range(0,len(dast)):
+    date.append(dast[i][:-2])
+    state.append(dast[i][10:12])
+df['Date'] = date
+df['State'] = state
+
 # Saving the file to the path that the user selects.
 try: 
     with filedialog.asksaveasfile(defaultextension=".xlsx") as file: df.to_excel(file.name)
