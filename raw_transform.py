@@ -45,6 +45,9 @@ for i in range(0,len(raw)):
 # Creating a dataframe from the dictionary.
 df = pd.DataFrame.from_dict(agg_date,orient='index')
 df.columns = ['SHIPPER','COST','LC','DAT','DATES HIT']
+df['SHIPPER'] = df['SHIPPER']/df['LC']
+df['COST'] = df['COST']/df['LC']
+df['DAT'] = df['DAT']/df['LC']
 df.index.name = 'Date State'
 
 # Saving the file to the path that the user selects.
