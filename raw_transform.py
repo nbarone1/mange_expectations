@@ -16,6 +16,8 @@ def f_open():
     root.destroy()
     return pd.read_excel(path)
 
+path = "c:\\users\\nicholas.barone"
+raw = pd.read_excel(path)
 # Creating a dictionary with the key being the concatenation of the date and state and the value being
 # a list of the aggregated values.
 agg_date = {}
@@ -62,8 +64,9 @@ for i in range(0,len(dast)):
 df['Date'] = date
 df['State'] = state
 
+def f_save(df):
 # Saving the file to the path that the user selects.
-try: 
-    with filedialog.asksaveasfile(defaultextension=".xlsx") as file: df.to_excel(file.name)
-except AttributeError:
-    print("Cancelled Save")
+    try: 
+        with filedialog.asksaveasfile(defaultextension=".xlsx") as file: df.to_excel(file.name)
+    except AttributeError:
+        print("Cancelled Save")
