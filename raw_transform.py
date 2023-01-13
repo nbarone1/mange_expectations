@@ -1,4 +1,5 @@
 # Turn Raw into usable
+# idea is to use this plus managerial input for new map
 
 # Importing the pandas library and renaming it to pd.
 import pandas as pd
