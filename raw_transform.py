@@ -9,12 +9,12 @@ import tkinter as tk
 from tkinter import filedialog
 
 # Importing the data file.
-root = tk.Tk()
+def f_open():
+    root = tk.Tk()
 
-path = filedialog.askopenfilename()
-root.destroy()
-
-raw = pd.read_excel(path)
+    path = filedialog.askopenfilename()
+    root.destroy()
+    return pd.read_excel(path)
 
 # Creating a dictionary with the key being the concatenation of the date and state and the value being
 # a list of the aggregated values.
