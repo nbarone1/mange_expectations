@@ -45,23 +45,27 @@ def data_transform(raw):
             agg_date[concat][1] += raw.iloc[i].loc["AVG COST"]
             agg_date[concat][2] += raw.iloc[i].loc["Load Count"]
             agg_date[concat][3] += raw.iloc[i].loc["DAT_EST_RATE"]
-            agg_date[concat][4] += 1
+            agg_date[concat][4] += raw.iloc[i].loc["Carrier Count"]
+            agg_date[concat][5] += raw.iloc[i].loc["Shipper Count"]
+            agg_date[concat][6] += 1
         else:
             dast.append(concat)
-            agg_date[concat] = [raw.iloc[i].loc["Avg(Shipper_Rate)"],raw.iloc[i].loc["AVG COST"],raw.iloc[i].loc["Load Count"],raw.iloc[i].loc["DAT_EST_RATE"],1]
+            agg_date[concat] = [raw.iloc[i].loc["Avg(Shipper_Rate)"],raw.iloc[i].loc["AVG COST"],raw.iloc[i].loc["Load Count"],raw.iloc[i].loc["DAT_EST_RATE"],raw.iloc[i].loc["Carrier Count"],raw.iloc[i].loc["Shipper Count"],1]
         if concat2 in agg_date:
             agg_date[concat2][0] += raw.iloc[i].loc["Avg(Shipper_Rate)"]
             agg_date[concat2][1] += raw.iloc[i].loc["AVG COST"]
             agg_date[concat2][2] += raw.iloc[i].loc["Load Count"]
             agg_date[concat2][3] += raw.iloc[i].loc["DAT_EST_RATE"]
-            agg_date[concat2][4] += 1
+            agg_date[concat2][4] += raw.iloc[i].loc["Carrier Count"]
+            agg_date[concat2][5] += raw.iloc[i].loc["Shipper Count"]
+            agg_date[concat2][6] += 1
         else:
             dast.append(concat2)
-            agg_date[concat2] = [raw.iloc[i].loc["Avg(Shipper_Rate)"],raw.iloc[i].loc["AVG COST"],raw.iloc[i].loc["Load Count"],raw.iloc[i].loc["DAT_EST_RATE"],1]
+            agg_date[concat2] = [raw.iloc[i].loc["Avg(Shipper_Rate)"],raw.iloc[i].loc["AVG COST"],raw.iloc[i].loc["Load Count"],raw.iloc[i].loc["DAT_EST_RATE"],raw.iloc[i].loc["Carrier Count"],raw.iloc[i].loc["Shipper Count"],1]
 
     # Creating a dataframe from the dictionary.
     df = pd.DataFrame.from_dict(agg_date,orient='index')
-    df.columns = ['SHIPPER','COST','LC','DAT','DATES HIT']
+    df.columns = ['SHIPPER','COST','LC','DAT','Carriers','Shipppers','DATES HIT']
     df['SHIPPER'] = df['SHIPPER']/df['LC']
     df['COST'] = df['COST']/df['LC']
     df['DAT'] = df['DAT']/df['LC']
