@@ -3,6 +3,7 @@
 
 # Importing the pandas library and renaming it to pd.
 import pandas as pd
+from sklearn import preprocessing
 
 # Select Data File
 import tkinter as tk
@@ -69,6 +70,11 @@ def data_transform(raw):
     df['SHIPPER'] = df['SHIPPER']/df['LC']
     df['COST'] = df['COST']/df['LC']
     df['DAT'] = df['DAT']/df['LC']
+    df['SHIPPER'] = preprocessing.normalize(df['SHIPPER'])
+    df['COST'] = preprocessing.normalize(df['COST'])
+    df['DAT'] = preprocessing.normalize(df['DAT'])
+    df['Carrier Count'] = preprocessing.normalize(df['Carrier Count'])
+    df['Shipper Count'] = preprocessing.normalize(df['Shipper Count'])
     df.index.name = 'Date State'
 
     # Clean Date and State values up
