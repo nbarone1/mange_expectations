@@ -2,7 +2,9 @@
 # idea is to use this plus managerial input for new map
 
 # Importing the pandas library and renaming it to pd.
+# Importing the numpy library and renaming it to np.
 import pandas as pd
+import numpy as np
 
 # Select Data File
 import tkinter as tk
@@ -32,6 +34,14 @@ def data_transform(raw):
     """
     # Creating a dictionary with the key being the concatenation of the date and state and the value being
     # a list of the aggregated values.
+
+    origstates = pd.unique(raw["Origin State"])
+    deststates = pd.unique(raw["Destination State"])
+
+    statelist = np.union1d(origstates,deststates)
+    statelist = np.delete(statelist, np.where(statelist == ", "))
+    print(statelist)
+
     agg_date = {}
     dast = []
 
@@ -39,7 +49,7 @@ def data_transform(raw):
     # list of the average shipper rate, average cost, load count, dat estimated rate, and 1.
     for i in range(0,len(raw)):
         concat = str(raw.iloc[i].loc["%Calendar Date"])[0:10]+raw.iloc[i].loc["Origin State"]
-        concat2 = str(raw.iloc[i].loc["%Calendar Date"])[0:10]+raw.iloc[i].loc["Origin State"]
+        concat2 = str(raw.iloc[i].loc["%Calendar Date"])[0:10]+raw.iloc[i].loc["Destination State"]
         if concat in agg_date:
             agg_date[concat][0] += raw.iloc[i].loc["Avg(Shipper_Rate)"]
             agg_date[concat][1] += raw.iloc[i].loc["AVG COST"]
