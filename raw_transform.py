@@ -66,15 +66,10 @@ def data_transform(raw):
 
     # Creating a dataframe from the dictionary.
     df = pd.DataFrame.from_dict(agg_date,orient='index')
-    df.columns = ['SHIPPER','COST','LC','DAT','Carriers','Shipppers','DATES HIT']
+    df.columns = ['SHIPPER','COST','LC','DAT','Carriers','Shippers','DATES HIT']
     df['SHIPPER'] = df['SHIPPER']/df['LC']
     df['COST'] = df['COST']/df['LC']
     df['DAT'] = df['DAT']/df['LC']
-    df['SHIPPER'] = preprocessing.normalize(df['SHIPPER'])
-    df['COST'] = preprocessing.normalize(df['COST'])
-    df['DAT'] = preprocessing.normalize(df['DAT'])
-    df['Carrier Count'] = preprocessing.normalize(df['Carrier Count'])
-    df['Shipper Count'] = preprocessing.normalize(df['Shipper Count'])
     df.index.name = 'Date State'
 
     # Clean Date and State values up
