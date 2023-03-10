@@ -3,7 +3,6 @@
 
 # Importing the pandas library and renaming it to pd.
 import pandas as pd
-from sklearn import preprocessing
 
 # Select Data File
 import tkinter as tk
