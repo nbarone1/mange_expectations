@@ -91,6 +91,12 @@ def data_transform(raw):
     df['State'] = state
     return df
 
+def regroup(df):
+    base = df
+    lanelist = base['Market_ID_Lane'].unique()
+    for lane in lanelist:
+        return
+
 def f_save(df):
     """
     It saves the dataframe to the path that the user selects
