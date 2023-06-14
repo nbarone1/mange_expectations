@@ -94,8 +94,7 @@ def data_transform(raw):
 def regroup(df):
     base = df
     lanelist = base['Market_ID_Lane'].unique()
-    for lane in lanelist:
-        return
+    print(lanelist)
 
 def f_save(df):
     """
